@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
-	"github.com/pablopasquim/CofrinhoPay/internal/models"
+	"github.com/pablopasquim/CofrinhoPay/internal/repositories/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -33,10 +33,10 @@ func Connect() { // db config
 	DB = database
 
 	err = DB.AutoMigrate(
-		&models.Account{},
-		&models.Transaction{},
-		&models.Category{},
-		&models.User{},
+		&models.AccountDB{},
+		&models.TransactionDB{},
+		&models.CategoryDB{},
+		&models.UserDB{},
 	)
 	if err != nil {
 		log.Fatal("❌ Error auto-migrate in database", err)
