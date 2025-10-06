@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
-	"github.com/pablopasquim/CofrinhoPay/internal/repositories/models"
+	"github.com/pablopasquim/CofrinhoPay/internal/adapters/outbound/repositories/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )

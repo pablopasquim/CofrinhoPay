@@ -2,6 +2,7 @@ package services
 
 import (
 	"github.com/pablopasquim/CofrinhoPay/internal/core/domain"
+
 	"github.com/pablopasquim/CofrinhoPay/internal/core/ports/repositories"
 )
 
