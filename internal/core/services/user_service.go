@@ -2,12 +2,18 @@ package services
 
 import (
 	"errors"
+
 	"github.com/pablopasquim/CofrinhoPay/internal/core/domain"
 	"github.com/pablopasquim/CofrinhoPay/internal/core/ports/repositories"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type UserService struct {
 	userRepo repositories.UserRepository
+}
+
+func NewUserService(repo repositories.UserRepository) *UserService {
+	return &UserService{userRepo: repo}
 }
 
 func (s *UserService) CreateUser(user *domain.User) error {
@@ -15,7 +21,6 @@ func (s *UserService) CreateUser(user *domain.User) error {
 		return err
 	}
 
-	// Verificar se email já existe
 	existingUser, _ := s.userRepo.GetByEmail(user.Email)
 	if existingUser != nil {
 		return errors.New("email já está em uso")
@@ -42,6 +47,23 @@ func (s *UserService) validateUser(user *domain.User) error {
 	}
 
 	return nil
+}
+
+func (s *UserService) Login(email, password string) (*domain.User, error) {
+	user, err := s.userRepo.GetByEmail(email)
+	if err != nil {
+		return nil, err
+	}
+	if user == nil {
+		return nil, errors.New("usuário não encontrado")
+	}
+
+	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+	if err != nil {
+		return nil, errors.New("senha incorreta")
+	}
+
+	return user, nil
 }
 
 func (s *UserService) GetUserByID(id uint) (*domain.User, error) {
